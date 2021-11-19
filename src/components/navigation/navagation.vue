@@ -46,7 +46,7 @@
                 </v-list-item-icon>
 
                 <v-list-item-content>
-                    <v-list-item-title>关闭temu模拟器</v-list-item-title>
+                    <v-list-item-title>退出</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
         </template>
