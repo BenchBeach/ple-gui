@@ -121,7 +121,9 @@
                 </v-tab-item>
                 <v-tab-item :eager="true">
                     <v-row justify="center" class="ma-4">
-                        <v-col cols="12" style="text-align:center"><div class="text-h6">错误分布</div></v-col>
+                        <v-col cols="12" style="text-align:center">
+                            <div class="text-h6">错误分布</div>
+                        </v-col>
                     </v-row>
                     <v-divider class="mx-4"></v-divider>
                     <v-row justify="center" class="ma-4">
@@ -150,9 +152,9 @@ export default {
     name: 'MainView',
     data: () => ({
         page: 1,
-        timeFile:null,
-        timeData:'',
-        XDate:'',
+        timeFile: null,
+        timeData: '',
+        XDate: '',
         overlay: false,
         tab: '',
         file: null,
@@ -176,29 +178,29 @@ export default {
     mounted() {
     },
     methods: {
-        uploadFigure(){
+        uploadFigure() {
             let reader = new FileReader();
-            let _this=this
+            let _this = this
             if (this.timeFile) {
                 let tempDate = []
                 let tempArr = []
                 reader.readAsText(this.timeFile)
                 reader.onload = () => {
                     const data = reader.result.split('\n')
-                    for(let line of data){
-                        const date=line.split(' ')[0]
-                        const count=line.split(' ')[1]
-                        let dateO= new Date(Date.parse(date.replace(/-/g,  "/")));
+                    for (let line of data) {
+                        const date = line.split(' ')[0]
+                        const count = line.split(' ')[1]
+                        let dateO = new Date(Date.parse(date.replace(/-/g, "/")));
                         tempDate.push(date)
-                        tempArr.push([dateO.getTime(),parseInt(count)])
+                        tempArr.push([dateO.getTime(), parseInt(count)])
                     }
-                    _this.timeData=tempArr
-                    _this.XDate=tempDate
+                    _this.timeData = tempArr
+                    _this.XDate = tempDate
                     _this.generateFigure()
                 }
             }
         },
-        generateFigure(){
+        generateFigure() {
             let chartDom = document.getElementById('time-figure');
             let myChart = echarts.init(chartDom);
             let option;
@@ -271,7 +273,7 @@ export default {
                     for (let i = 0; i < data.length; i++) {
                         let line = data[i]
                         if (lineCount === 0) {
-                            templates = line.split(' ')
+                            // templates = line.split(' ')
                             lineCount++
                         } else if (lineCount === 1) {
                             let lineTokens = line.split(',')
@@ -281,6 +283,12 @@ export default {
                             lineCount++
                         } else if (lineCount === 2) {
                             attention = line.split(' ').map((item) => parseFloat(item))
+                            lineCount++
+                        } else if (lineCount === 3) {
+                            templates = line.split(' ').map(
+                                (t) => {
+                                    return t.split('$$').join(' ')
+                                })
                             lineCount++
                         } else {
                             tempArr.push({
